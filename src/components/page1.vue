@@ -1,7 +1,8 @@
 <template>
   <div>
     <h2 class="title is-5">Личная информация</h2>
-    <form @submit.prevent="validate">
+    <div v-if="loading" class="has-text-centered">Loading...</div>
+    <form v-else @submit.prevent="validate">
       <div class="field" v-for="key of Object.keys(fields)" :key="key">
         <label class="label" v-text="labels[key]" />
         <div class="control">
@@ -23,6 +24,8 @@
 </template>
 
 <script>
+import { createPromise } from "../utils";
+
 export default {
   data () {
     return {
@@ -38,6 +41,7 @@ export default {
         name: undefined,
         surname: undefined,
       },
+      loading: false,
     }
   },
   methods: {
@@ -58,7 +62,13 @@ export default {
         }
       }
 
-      this.$router.push('second');
+      this.loading = true;
+      createPromise().then(
+        result => {
+          this.loading = false;
+          this.$router.push('second');
+        },
+      );
     },
   }
 }

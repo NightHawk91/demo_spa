@@ -1,7 +1,8 @@
 <template>
   <div>
     <h2 class="title is-5">Дополнительная информация</h2>
-    <form @submit.prevent="validate">
+    <div v-if="loading" class="has-text-centered">Loading...</div>
+    <form v-else @submit.prevent="validate">
       <label class="label">Любимый цвет</label>
       <p v-if="error" class="help is-danger" v-text="error" />
       <div class="buttons">
@@ -23,12 +24,15 @@
 </template>
 
 <script>
+  import { createPromise } from "../utils";
+
   export default {
     data () {
       return {
         favoriteColor: undefined,
         colors: ['white', 'black', 'red', 'green', 'yellow', 'blue', 'pink', 'orange', 'gray'],
         error: undefined,
+        loading: false,
       }
     },
     methods: {
@@ -38,7 +42,13 @@
           return;
         }
 
-        this.$router.push('fourth')
+        this.loading = true;
+        createPromise().then(
+          result => {
+            this.loading = false;
+            this.$router.push('fourth');
+          },
+        );
       },
       setFavoriteColor (color) {
         this.favoriteColor = color;

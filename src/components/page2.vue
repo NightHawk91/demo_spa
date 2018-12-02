@@ -1,7 +1,8 @@
 <template>
   <div>
     <h2 class="title is-5">Очень важная информация</h2>
-    <form @submit.prevent="validate">
+    <div v-if="loading" class="has-text-centered">Loading...</div>
+    <form v-else @submit.prevent="validate">
       <div class="field">
         <label class="label">Любимая цифра</label>
         <div class="control">
@@ -33,17 +34,26 @@
 </template>
 
 <script>
+import { createPromise } from "../utils";
+
 export default {
   data () {
     return {
       favoriteNumber: undefined,
       favoriteArtist: undefined,
       artists: ['NightWish', 'Powerwolf', 'Five Finger Death Punch', 'Dreamtale', 'Beast In Black'],
+      loading: false,
     }
   },
   methods: {
     validate () {
-      this.$router.push('third')
+      this.loading = true;
+      createPromise().then(
+        result => {
+          this.loading = false;
+          this.$router.push('third');
+        },
+      );
     },
   },
 }
