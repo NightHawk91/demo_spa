@@ -5,9 +5,9 @@
       <div class="field">
         <label class="label">Любимая цифра</label>
         <div class="control">
-          <label class="radio" v-for="number of 6" :key="--number">
-            <input type="radio" name="number" :value="number" required>
-            {{ number }}
+          <label class="radio" v-for="num of 6" :key="--num">
+            <input type="radio" name="number" :value="num" v-model="favoriteNumber" required>
+            {{ num }}
           </label>
         </div>
       </div>
@@ -16,8 +16,8 @@
         <label class="label">Любимый музыкальный исполнитель</label>
         <div class="control">
           <div class="select">
-            <select :value="undefined" required>
-              <option v-for="(artist, index) of musicArtists" :key="index" v-text="artist" />
+            <select v-model="favoriteArtist" required>
+              <option v-for="(artist, index) of artists" :key="index" v-text="artist" />
             </select>
           </div>
         </div>
@@ -36,7 +36,9 @@
 export default {
   data () {
     return {
-      musicArtists: ['NightWish', 'Powerwolf', 'Five Finger Death Punch', 'Dreamtale', 'Beast In Black'],
+      favoriteNumber: undefined,
+      favoriteArtist: undefined,
+      artists: ['NightWish', 'Powerwolf', 'Five Finger Death Punch', 'Dreamtale', 'Beast In Black'],
     }
   },
   methods: {
