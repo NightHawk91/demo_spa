@@ -3,6 +3,7 @@
     <h2 class="title is-5">Дополнительная информация</h2>
     <form @submit.prevent="validate">
       <label class="label">Любимый цвет</label>
+      <p v-if="error" class="help is-danger" v-text="error" />
       <div class="buttons">
         <button v-for="(color, index) of colors"
               class="button colored"
@@ -26,11 +27,17 @@
     data () {
       return {
         favoriteColor: undefined,
-        colors: ['white', 'black', 'red', 'green', 'yellow', 'blue', 'pink', 'orange', 'gray']
+        colors: ['white', 'black', 'red', 'green', 'yellow', 'blue', 'pink', 'orange', 'gray'],
+        error: undefined,
       }
     },
     methods: {
       validate () {
+        if (!this.favoriteColor) {
+          this.error = 'Пожалуйста, выберите любимый цвет.';
+          return;
+        }
+
         this.$router.push('fourth')
       },
       setFavoriteColor (color) {
